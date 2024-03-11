@@ -1,0 +1,31 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.grid{
+    display : grid;
+    gap : 5px;
+    grid-template-columns: repeat(3, 200px);
+    grid-template-rows: repeat(3, 200px);
+    background-image: url("../img/morpion_back.jpg");
+}
+
+.box{
+    background-color: white;
+    opacity: 0.45;
+    font-size: 10em;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.8s, color 0.8s;
+
+}
+
+.msg{
+    text-align: center;
+    font-size: 2em;
+}
+
+.box.succes{color: rgb(11, 138, 22); background-color: rgb(172, 251, 172);}
+.box.notice{color: rgb(18, 16, 151); background-color: rgb(184, 217, 255); cursor: not-allowed}

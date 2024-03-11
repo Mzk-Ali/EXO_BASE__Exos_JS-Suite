@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    
+    <div id="board"></div>
+
+    <script>
+        function shuffleChildren(parent){
+            let children = parent.children
+            let i = children.length, k, temp
+            while(--i > 0){
+                k = Math.floor(Math.random() * (i+1))
+                temp = children[k]
+                children[k] = children[i]
+                parent.appendChild(temp)
+            }
+        }
+
+        function showReaction(type, clickedBox){
+            clickedBox.classList.add(type)
+            if(type !== "succes"){
+                setTimeout(function(){
+                    clickedBox.classList.remove(type)
+                }, 800)
+            }
+        }
+
+
+        // Ask box number
+        let nbr_boite = prompt('Combien voulez-vous afficher de boîtes ?')
+
+        const box = document.createElement("div") // On cree la div, preferable de la placer dans const
+        box.classList.add("box") // On ajoute la classe "box" à cette div
+        const board = document.querySelector("#board") // on capture le parent
+        
+
+
+        // Timer
+        let secondes = 0;
+        const box_time = document.createElement("div")
+        box_time.classList.add("box-time")
+        document.body.appendChild(box_time)
+        function time(){
+            secondes++;
+            box_time.innerHTML = secondes;
+        }
+        timer = window.setInterval(time, 1000);
+
+
+        let nb = 1
+
+        for(let i=1; i <= nbr_boite; i++){
+            const newbox = box.cloneNode() // On fait d'abord une copie sinon on va garder 1 seule boite
+            newbox.innerText = i // On ecrit dans la div
+            board.appendChild(newbox)// on l'ajoute en tant qu'enfant dans le parent
+            
+            newbox.addEventListener("click", function(){
+                if(i == nb){
+                    console.log("Boite n°" + i + ", click !")
+                    newbox.classList.add("box-clicked")
+                    if(nb == board.children.length){
+                        board.querySelectorAll(".box").forEach(function(box){
+                            showReaction("succes", box)
+                        })
+                        window.clearInterval(timer);
+
+                    }
+                    console.log(nb)
+                    console.log(board.children.length)
+                    nb++
+                    shuffleChildren(board)
+                }
+                else if(i > nb){
+                    showReaction("error", newbox)
+                    nb = 1
+                    board.querySelectorAll(".box-clicked").forEach(function(validBox){
+                        validBox.classList.remove("box-clicked")
+                    })
+                    shuffleChildren(board)
+                }
+                else{
+                    showReaction("notice", newbox)
+                    shuffleChildren(board)
+                }
+
+            })
+        }
+
+
+
+        shuffleChildren(board)
+        
+    </script>
+</body>
+</html>
